@@ -1,3 +1,4 @@
+import re
 from flask import Blueprint, request, jsonify
 from .models import Book
 from . import db
@@ -7,7 +8,17 @@ from datetime import datetime
 
 api_bp = Blueprint('api', __name__)
 
+# Regular expression for a valid ISBN (13 digits)
+ISBN_REGEX = r'^\d{13}$'
+
+def validate_isbn(isbn):
+    """Validate the ISBN format (must be 13 digits)."""
+    if not re.match(ISBN_REGEX, isbn):
+        return "Invalid ISBN format. ISBN must be 13 digits."
+    return None
+
 @api_bp.route('/books', methods=['GET'])
+@require_api_key
 def get_books():
     """Get all books.
     ---
@@ -38,6 +49,8 @@ def get_books():
               updated_at:
                 type: string
                 format: date-time
+    security:
+      - APIKeyHeader: []  # Add security for this route
     """
     books = Book.query.all()
     return jsonify([{
@@ -63,10 +76,10 @@ def get_book(id):
         in: path
         type: integer
         required: true
-        description: ID of the book
+        description: ID of the book to retrieve
     responses:
       200:
-        description: Details of a specific book
+        description: A specific book's details
         schema:
           type: object
           properties:
@@ -111,7 +124,7 @@ def get_book(id):
 @api_bp.route('/books', methods=['POST'])
 @require_api_key
 def add_book():
-    """Add a new book.
+    """Add a new book to the collection.
     ---
     tags:
       - Books
@@ -124,23 +137,29 @@ def add_book():
           properties:
             title:
               type: string
+              description: The title of the book
             author:
               type: string
+              description: The author of the book
             isbn:
               type: string
+              description: The ISBN of the book (13 digits). **ISBN must be a 13-digit number.**
             publish_date:
               type: string
               format: date
+              description: The publication date in YYYY-MM-DD format
     responses:
       201:
-        description: Book added successfully
+        description: Successfully added the new book
         schema:
           type: object
           properties:
             message:
               type: string
+              example: "Book added successfully"
             id:
               type: integer
+              description: ID of the newly created book
       400:
         description: Invalid input data
         schema:
@@ -148,8 +167,16 @@ def add_book():
           properties:
             error:
               type: string
+              example: "Invalid ISBN format. ISBN must be 13 digits."
     """
     data = request.get_json()
+
+    # Validate ISBN
+    isbn_error = validate_isbn(data.get('isbn', ''))
+    if isbn_error:
+        return jsonify({"error": isbn_error}), 400
+
+    # Validate other fields
     error = validate_book_data(data)
     if error:
         return jsonify({"error": error}), 400
@@ -167,7 +194,7 @@ def add_book():
 @api_bp.route('/books/<int:id>', methods=['PUT'])
 @require_api_key
 def update_book(id):
-    """Update an existing book.
+    """Update an existing book by ID.
     ---
     tags:
       - Books
@@ -176,7 +203,7 @@ def update_book(id):
         in: path
         type: integer
         required: true
-        description: ID of the book to update
+        description: The ID of the book to update
       - name: body
         in: body
         required: true
@@ -185,21 +212,26 @@ def update_book(id):
           properties:
             title:
               type: string
+              description: The updated title of the book
             author:
               type: string
+              description: The updated author of the book
             isbn:
               type: string
+              description: The updated ISBN of the book (13 digits). **ISBN must be a 13-digit number.**
             publish_date:
               type: string
               format: date
+              description: The updated publication date in YYYY-MM-DD format
     responses:
       200:
-        description: Book updated successfully
+        description: Successfully updated the book
         schema:
           type: object
           properties:
             message:
               type: string
+              example: "Book updated successfully"
       400:
         description: Invalid input data
         schema:
@@ -207,6 +239,7 @@ def update_book(id):
           properties:
             error:
               type: string
+              example: "Invalid ISBN format. ISBN must be 13 digits."
       404:
         description: Book not found
         schema:
@@ -214,12 +247,21 @@ def update_book(id):
           properties:
             error:
               type: string
+              example: "Book not found"
     """
     book = Book.query.get(id)
     if not book:
         return jsonify({"error": "Book not found"}), 404
 
     data = request.get_json()
+
+    # Validate ISBN
+    if 'isbn' in data:
+        isbn_error = validate_isbn(data['isbn'])
+        if isbn_error:
+            return jsonify({"error": isbn_error}), 400
+
+    # Update other fields
     if 'title' in data:
         book.title = data['title']
     if 'author' in data:
@@ -250,12 +292,13 @@ def delete_book(id):
         description: ID of the book to delete
     responses:
       200:
-        description: Book deleted successfully
+        description: Successfully deleted the book
         schema:
           type: object
           properties:
             message:
               type: string
+              example: "Book deleted successfully"
       404:
         description: Book not found
         schema:
@@ -263,6 +306,7 @@ def delete_book(id):
           properties:
             error:
               type: string
+              example: "Book not found"
     """
     book = Book.query.get(id)
     if not book:

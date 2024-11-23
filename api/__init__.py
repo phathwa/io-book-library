@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="urllib3")
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
