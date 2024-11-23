@@ -207,9 +207,15 @@ def delete_book(id):
     db.session.commit()
     return jsonify({"message": "Book deleted successfully"}), 200
 
+from flask import jsonify
+
 @app.route('/', methods=['GET'])
 def main():
-    return {"message": "Visit /apidocs for API documentation"}
+    return jsonify({
+        "message": "Visit the API documentation here:",
+        "documentation": "<a href='/docs'>/docs</a>"
+    })
+
 
 if __name__ == "__main__":
     with app.app_context():
