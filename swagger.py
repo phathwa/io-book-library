@@ -1,7 +1,9 @@
 from flasgger import Swagger
+import os
 
 def init_swagger(app):
     """Initialize Swagger with the given Flask app."""
+    public_ip = os.getenv("PUBLIC_IP", "127.0.0.1")
     swagger_template = {
         "swagger": "2.0",
         "info": {
@@ -9,7 +11,7 @@ def init_swagger(app):
             "description": "API for managing a library of books.",
             "version": "1.0.0"
         },
-        "host": "127.0.0.1:80",
+        "host": f"{public_ip}:80",  # Use the public IP from environment
         "basePath": "/",
         "securityDefinitions": {
             "APIKeyHeader": {

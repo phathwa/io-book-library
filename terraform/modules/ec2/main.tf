@@ -18,8 +18,9 @@ resource "aws_instance" "web" {
 
               # Install Flask and required dependencies
               pip3 install -r requirements.txt
-              
-              # Export the public IP as an environment variable
+
+              # Export the public IP as an environment variable (for swagger ui)
+              python3 setup_public_ip.py
               export PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
               echo "Public IP is: $PUBLIC_IP"
 
@@ -31,3 +32,5 @@ resource "aws_instance" "web" {
     Name = var.ec2_names[count.index]
   }
 }
+
+
