@@ -13,7 +13,7 @@ resource "aws_instance" "web" {
   user_data = <<-EOF
               #!/bin/bash
               # Install Python, pip, git, and AWS CLI
-              yum install -y python3 python3-pip git aws-cli
+              yum install -y python3 python3-pip git aws-cli jq
 
               # Clone Flask app from GitHub
               cd /home/ec2-user
@@ -29,21 +29,30 @@ resource "aws_instance" "web" {
               SECRET_NAME="x-api-key"
               REGION="eu-north-1"
               SECRET=$(aws secretsmanager get-secret-value --region $REGION --secret-id $SECRET_NAME --query SecretString --output text)
-              
+
               if [ $? -ne 0 ]; then
-                echo "Failed to retrieve secret"
-                exit 1
+                  echo "Failed to retrieve secret"
+                  exit 1
               fi
 
-              echo "SECRET: $SECRET"  # Debugging; remove in production
+              # If the secret is a JSON, extract the API key
+              API_KEY=$(echo $SECRET | jq -r '.["x-api-key"]')
 
-              # Save the secret as an environment variable
-              echo "export API_KEY=$SECRET" >> /etc/profile
+              if [ -z "$API_KEY" ]; then
+                  echo "API_KEY not found in secret"
+                  exit 1
+              fi
+
+              # Debugging; remove in production
+              echo "SECRET: $API_KEY"
+
+              # Save the API key as an environment variable
+              echo "export API_KEY=$API_KEY" >> /etc/profile
               source /etc/profile
 
               # Run the Flask app on port 80
               nohup python3 main.py &
-  EOF
+            EOF
 
   tags = {
     Name = var.ec2_names[count.index]
@@ -95,4 +104,3 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
   name = "ec2-instance-profile"
   role = aws_iam_role.ec2_role.name
 }
-
