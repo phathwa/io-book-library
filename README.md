@@ -1,25 +1,29 @@
 # Book Library API
+
 Create a simple REST API for managing a library's book collection using Flask and SQLite/PostgreSQL (candidate's choice).
 
 ## Requirements:
 
 1. Create a Flask application with the following endpoints:
+
 - GET /api/books - List all books
 - GET /api/books/<id> - Get a specific book
 - POST /api/books - Add a new book
 - PUT /api/books/<id> - Update a book
 
 2. Database Requirements:
+
 - Books should have the following fields:
-  * id (auto-generated)
-  * title
-  * author
-  * isbn
-  * publish_date
-  * created_at
-  * updated_at
+  - id (auto-generated)
+  - title
+  - author
+  - isbn
+  - publish_date
+  - created_at
+  - updated_at
 
 3. Additional Requirements:
+
 - Implement proper error handling
 - Include input validation
 - Write at least 3 unit tests
@@ -27,6 +31,7 @@ Create a simple REST API for managing a library's book collection using Flask an
 - Document API endpoints
 
 ## Starter Code:
+
 Here's some starter code to provide structure:
 
 ```python
@@ -76,6 +81,7 @@ if __name__ == '__main__':
 ```
 
 ## Part II - AWS Deployment
+
 Temporarily deploy your solution to your AWS account. Make use of any "infrastructure as code" solutions (CDK, serverless framework, SST Cloudformation etc.).
 Include your infrastructure as code solution in the same repository as the service source code.
 When making your submission you may be required to demonstrate that you are able to redeploy your solution in your account using your infrastructure as code implementation.
@@ -85,27 +91,33 @@ You may make use of any AWS services to deploy your solution.
 An architecture diagram is not required but is a bonus.
 
 ## Evaluation Criteria:
+
 1. Code Quality:
+
    - Clean, readable code
    - Proper error handling
    - Good coding practices and patterns
 
 2. API Design:
+
    - RESTful principles
    - Proper status codes
    - Clear request/response format
 
 3. Database Usage:
+
    - Proper model design
    - Efficient queries
    - Data validation
 
 4. Testing:
+
    - Test coverage
    - Test quality
    - Edge cases considered
 
 5. Documentation:
+
    - Clear API documentation
    - Setup instructions
    - Code comments where necessary
@@ -117,6 +129,7 @@ An architecture diagram is not required but is a bonus.
    - Usage of environment variables / secrets
 
 ## Submission Requirements:
+
 1. Provide the code in a GitHub repository
 2. Include a README.md with:
    - Setup instructions
@@ -125,4 +138,3 @@ An architecture diagram is not required but is a bonus.
    - Choice of database and why
 3. Requirements.txt file
 4. Unit tests
-
