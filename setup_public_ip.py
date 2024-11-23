@@ -1,3 +1,4 @@
+import os
 import requests
 
 def get_public_ip():
@@ -17,11 +18,24 @@ def get_public_ip():
         response.raise_for_status()
         
         public_ip = response.text
-        return public_ip if public_ip else "No public IP assigned to this instance."
+        return public_ip if public_ip else None
     
     except requests.exceptions.RequestException as e:
-        return f"Error fetching public IP: {e}"
+        print(f"Error fetching public IP: {e}")
+        return None
+
+def set_env_variable():
+    """Set the public IP as an environment variable."""
+    public_ip = get_public_ip()
+    if public_ip:
+        os.environ["PUBLIC_IP"] = public_ip
+        print(f"Environment variable PUBLIC_IP set to: {public_ip}")
+    else:
+        print("Could not fetch public IP. Environment variable not set.")
 
 if __name__ == "__main__":
-    public_ip = get_public_ip()
-    print(f"Public IP: {public_ip}")
+    set_env_variable()
+    
+    # Example usage in the Flask/Swagger app
+    public_ip = os.getenv("PUBLIC_IP", "127.0.0.1")
+    print(f"Swagger will use host: {public_ip}")
