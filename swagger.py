@@ -9,7 +9,7 @@ def init_swagger(app):
             "description": "API for managing a library of books.",
             "version": "1.0.0"
         },
-        "host": "127.0.0.1:5005",
+        "host": "127.0.0.1:80",
         "basePath": "/",
         "securityDefinitions": {
             "APIKeyHeader": {
