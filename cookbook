@@ -5,3 +5,7 @@ LOGS
 # Check cloud-init logs
 sudo cat /var/log/cloud-init.log
 sudo cat /var/log/cloud-init-output.log
+
+
+# Create creation
+aws secretsmanager create-secret --name api-key --secret-string '{"x-api-key":"real-key"}'
