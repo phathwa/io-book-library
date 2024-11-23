@@ -17,6 +17,8 @@ resource "aws_instance" "web" {
               cd phathwa-book-library
 
               # Install Flask and required dependencies
+              python3 -m venv .venv
+              source .venv/bin/activate 
               pip3 install -r requirements.txt
 
               # Export the public IP as an environment variable (for swagger ui)
