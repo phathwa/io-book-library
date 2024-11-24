@@ -1,6 +1,8 @@
 # Book Library API
 
 A simple REST API for managing a library's book collection, built using Flask and deployed on AWS. This API allows users to manage a collection of books by adding, retrieving, and updating books in the system.
+[![alt text](assets/landing.png)](http://16.171.140.205/)
+[![alt text](assets/endpoints.png)](http://16.171.140.205/apidocs)
 
 ## Table of Contents
 
@@ -20,7 +22,7 @@ This project is an API for managing books using Flask. It allows you to perform 
 
 ### Key Features:
 
-- **Deployed API**: The API is deployed and can be tested using the public IP provided [HERE](http://16.171.140.205/).
+- **Deployed API**: The API is deployed and can be tested, [Click here to test the API](http://16.171.140.205/).
 - **PostgreSQL Database**: A PostgreSQL database is used to store book information. PostgreSQL was chosen because of its robustness, scalability, and support for complex queries. It provides ACID compliance, ensuring data integrity and reliability. Its advanced features such as JSONB support, full-text search, and its ability to handle large datasets make it a suitable choice for this application.
 - **Infrastructure as Code**: Terraform is used to provision AWS resources such as EC2 instances, IAM roles, and the PostgreSQL database.
 - **Testing**: You can interact with the API using **Swagger UI** for an easy testing experience.
@@ -258,6 +260,35 @@ source ./scripts/terra_run_deploy.sh
 ```
 
 ---
+
+## Testing the API using Swagger UI
+
+Swagger UI provides an interactive interface that allows you to easily test the API endpoints. Here’s how you can test the API using Swagger UI:
+
+1. **Access the Swagger UI Interface:**
+   - Open your web browser and navigate to the following URL:  
+     http://<public_ip>/docs (NOT https)
+     - Replace `<public_ip>` with the actual public IP address of your deployed API.
+     - Example: [http://16.171.140.205/apidocs](http://16.171.140.205/apidocs)
+2. **Explore the API Endpoints:**
+
+   - Once the Swagger UI loads, you will see a list of all available API endpoints.
+   - Each endpoint will show its method (GET, POST, PUT, DELETE), a description, and parameters.
+
+3. **Test the Endpoints:**
+   - To test an endpoint, click on the method (e.g., `GET /api/books`).
+   - Fill in any required parameters (like the book data for POST requests), and click on the "Try it out!" button.
+   - Swagger UI will display the response, including the HTTP status code and the returned data (if any).
+4. **Authentication:**
+
+   - Some endpoints may require an API key for authentication. You can include the API key in the `X-API-Key` header. This header is necessary for secure access to the API.
+   - To add the `X-API-Key` header, click on the "Authorize" button in the Swagger UI, then input the API key.
+
+5. **Check Responses:**
+   - After testing, you will see responses from the API directly in the Swagger UI.
+   - This allows you to verify if the API is working as expected and return the correct data.
+
+By following these steps, you can interactively test the API and ensure it functions properly before using it in your application.
 
 ## License
 
