@@ -5,7 +5,7 @@ import os
 class Config:
     """Base config class."""
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-secret-key')
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'aJNisndsjd6YVHDS') # app key
     API_KEY = os.environ.get("API_KEY", "fake-key")  # Default API key for development
 
 class DevelopmentConfig(Config):
