@@ -26,7 +26,6 @@ resource "aws_instance" "web" {
               python3 -m venv .venv
               source .venv/bin/activate 
               pip3 install -r requirements.txt
-              
 
               # Retrieve secret from AWS Secrets Manager
               REGION="${var.region}"
@@ -37,6 +36,7 @@ resource "aws_instance" "web" {
                   exit 1
               fi
 
+              # Extract API key from the secret
               API_KEY=$(echo $SECRET | jq -r '.["x-api-key"]')
               if [ -z "$API_KEY" ]; then
                   echo "API_KEY not found in secret"
@@ -44,14 +44,26 @@ resource "aws_instance" "web" {
               fi
 
               echo "export API_KEY=$API_KEY" >> /etc/profile
+
+              # Extract Database URI from the secret
+              DATABASE_URI=$(echo $SECRET | jq -r '.["database-uri"]')
+              if [ -z "$DATABASE_URI" ]; then
+                  echo "DATABASE_URI not found in secret"
+                  exit 1
+              fi
+
+              echo "export DATABASE_URI=$DATABASE_URI" >> /etc/profile
+
+              # Set Flask environment variable
+              echo "export FLASK_ENV=production" >> /etc/profile
+              
+              # Apply the environment variables
               source /etc/profile
 
               # Start application
               echo "starting application........"
-              nohup python3 main.py &
+              nohup python3 main.py > /var/log/io-library-app.log 2>&1 &
             EOF
-
-
 
   tags = {
     Name = var.ec2_names[count.index]

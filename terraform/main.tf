@@ -15,13 +15,13 @@ module "ec2" {
   sg_id      = module.sg.sg_id
   subnets    = module.vpc.subnet_ids
   secret_arn = data.aws_secretsmanager_secret.existing_secret.arn
-  secret_name = "x-api-key"  # Pass the secret name
+  secret_name = "io-library-secrets"  # will key app secrets
   region     = var.region 
 }
 
 # Query the existing secret (read-only)
 data "aws_secretsmanager_secret" "existing_secret" {
-  name = "x-api-key"  # The name of your existing secret
+  name = "io-library-secrets"  # The name of your existing secret
 }
 
 output "secret_arn" {

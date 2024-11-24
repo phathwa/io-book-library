@@ -8,4 +8,4 @@ sudo cat /var/log/cloud-init-output.log
 
 
 # Create creation
-aws secretsmanager create-secret --name api-key --secret-string '{"x-api-key":"real-key"}'
+aws secretsmanager create-secret --name api-key --secret-string '{"x-api-key":"secretkey"}'
