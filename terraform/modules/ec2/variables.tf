@@ -16,7 +16,7 @@ variable "subnets" {
 variable "ec2_names" {
     description = "EC2 names"
     type = list(string)
-    default = ["IO Library Server 1", "IO Library Server 2"]
+    default = ["io-lib-serv-1", "io-lib-serv-2"]
 }
 variable "secret_arn" {
   description = "The ARN of the AWS Secrets Manager secret"

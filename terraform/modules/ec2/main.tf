@@ -54,9 +54,6 @@ resource "aws_instance" "web" {
 
               echo "export DATABASE_URI=$DATABASE_URI" >> /etc/profile
 
-              # Set Flask environment variable
-              echo "export FLASK_ENV=production" >> /etc/profile
-              
               # Apply the environment variables
               source /etc/profile
 
@@ -64,6 +61,8 @@ resource "aws_instance" "web" {
               echo "starting application........"
               nohup python3 main.py > /var/log/io-library-app.log 2>&1 &
             EOF
+
+
 
   tags = {
     Name = var.ec2_names[count.index]

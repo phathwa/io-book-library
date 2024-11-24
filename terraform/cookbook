@@ -1,7 +1,0 @@
-terraform apply -auto-approve
-
-
-LOGS
-# Check cloud-init logs
-sudo cat /var/log/cloud-init.log
-sudo cat /var/log/cloud-init-output.log

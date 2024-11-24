@@ -1,140 +1,281 @@
 # Book Library API
 
-Create a simple REST API for managing a library's book collection using Flask and SQLite/PostgreSQL (candidate's choice).
+A simple REST API for managing a library's book collection, built using Flask and deployed on AWS. This API allows users to manage a collection of books by adding, retrieving, and updating books in the system.
 
-## Requirements:
+## Table of Contents
 
-1. Create a Flask application with the following endpoints:
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [API Endpoints](#api-endpoints)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Infrastructure as Code](#infrastructure-as-code)
+- [Assumptions](#assumptions)
+- [License](#license)
 
-- GET /api/books - List all books
-- GET /api/books/<id> - Get a specific book
-- POST /api/books - Add a new book
-- PUT /api/books/<id> - Update a book
+## Overview
 
-2. Database Requirements:
+This project is an API for managing books using Flask. It allows you to perform CRUD (Create, Read, Update, Delete) operations on a collection of books. The API is deployed on AWS using Terraform for infrastructure provisioning. PostgreSQL is used as the database to store book data.
 
-- Books should have the following fields:
-  - id (auto-generated)
-  - title
-  - author
-  - isbn
-  - publish_date
-  - created_at
-  - updated_at
+### Key Features:
 
-3. Additional Requirements:
+- **Deployed API**: The API is deployed and can be tested using the public IP provided [HERE](http://your-public-ip).
+- **PostgreSQL Database**: A PostgreSQL database is used to store book information. PostgreSQL was chosen because of its robustness, scalability, and support for complex queries. It provides ACID compliance, ensuring data integrity and reliability. Its advanced features such as JSONB support, full-text search, and its ability to handle large datasets make it a suitable choice for this application.
+- **Infrastructure as Code**: Terraform is used to provision AWS resources such as EC2 instances, IAM roles, and the PostgreSQL database.
+- **Testing**: You can interact with the API using **Swagger UI** for an easy testing experience.
 
-- Implement proper error handling
-- Include input validation
-- Write at least 3 unit tests
-- Include basic authentication (API key or Basic Auth)
-- Document API endpoints
+The project allows seamless deployment, integration, and testing of a book management API. You can create, retrieve, update, and delete books from the API, with data stored securely in a PostgreSQL database.
 
-## Starter Code:
+## Requirements
 
-Here's some starter code to provide structure:
+### Software Dependencies:
 
-```python
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from functools import wraps
+- Python 3.x
+- Flask
+- Flask-SQLAlchemy
+- AWS CLI (for deployment)
+- jq (for parsing JSON)
+- more in the re quirements.txt
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///library.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+### Database:
 
-# API key for basic authentication
-API_KEY = "your-api-key-here"
+- SQLite or PostgreSQL
+- The deployed application api uses PostgreSQL Database (Superbase)
 
-# Authentication decorator
-def require_api_key(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        api_key = request.headers.get('X-API-Key')
-        if api_key and api_key == API_KEY:
-            return f(*args, **kwargs)
-        return jsonify({"error": "Invalid API key"}), 401
-    return decorated
+### API Key:
 
-# Book Model
-class Book(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    author = db.Column(db.String(100), nullable=False)
-    isbn = db.Column(db.String(13), unique=True, nullable=False)
-    publish_date = db.Column(db.Date, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+- The API is secured using a static API key (`X-API-Key` header).
 
-# TODO: Implement the following endpoints:
-# GET /api/books
-# GET /api/books/<id>
-# POST /api/books
-# PUT /api/books/<id>
+### Optional (for deployment):
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+- AWS account with access to EC2, Secrets Manager, IAM roles.
+
+---
+
+## Installation
+
+### 1. Clone the repository:
+
+```bash
+git clone https://github.com/phathwa/io-book-library.git
+cd io-book-library
 ```
 
-## Part II - AWS Deployment
+### 2. Install Dependencies
 
-Temporarily deploy your solution to your AWS account. Make use of any "infrastructure as code" solutions (CDK, serverless framework, SST Cloudformation etc.).
-Include your infrastructure as code solution in the same repository as the service source code.
-When making your submission you may be required to demonstrate that you are able to redeploy your solution in your account using your infrastructure as code implementation.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-You may make use of any AWS services to deploy your solution.
+### 3. Set Up Virtual Environment
 
-An architecture diagram is not required but is a bonus.
+```bash
+pip install -r requirements.txt
+```
 
-## Evaluation Criteria:
+### 4. Set Environment Variables (Optional)
 
-1. Code Quality:
+```bash
+export FLASK_ENV=development
+export API_KEY=your_api_key_here
+export SQLALCHEMY_DATABASE_URI=your_database_uri_here
+```
 
-   - Clean, readable code
-   - Proper error handling
-   - Good coding practices and patterns
+### 5. Run the Application
 
-2. API Design:
+```bash
+python main.py
 
-   - RESTful principles
-   - Proper status codes
-   - Clear request/response format
+```
 
-3. Database Usage:
+The application will start on `http://127.0.0.1:80`.
 
-   - Proper model design
-   - Efficient queries
-   - Data validation
+---
 
-4. Testing:
+## API Endpoints
 
-   - Test coverage
-   - Test quality
-   - Edge cases considered
+### Authentication
 
-5. Documentation:
+```http
+X-API-Key: your_api_key_here (default: fake-key)
+```
 
-   - Clear API documentation
-   - Setup instructions
-   - Code comments where necessary
+### Endpoints
 
-6. AWS Cloud knowledge and execution:
-   - Understanding of AWS concepts
-   - Sound infrastructure best-practices
-   - Infrastructure as code best-practices
-   - Usage of environment variables / secrets
+`GET /api/books`
+Retrieve all books.
 
-## Submission Requirements:
+#### Response:
 
-1. Provide the code in a GitHub repository
-2. Include a README.md with:
-   - Setup instructions
-   - API documentation
-   - Any assumptions made
-   - Choice of database and why
-3. Requirements.txt file
-4. Unit tests
+```json
+[
+  {
+    "author": "Monde Phathwa",
+    "created_at": "Sun, 24 Nov 2024 12:32:51 GMT",
+    "id": 1,
+    "isbn": "1234567890123",
+    "publish_date": "2024-11-24",
+    "title": "Trust Me, This Book Is Interesting",
+    "updated_at": "Sun, 24 Nov 2024 12:32:51 GMT"
+  }
+]
+```
+
+---
+
+`GET /api/books`
+Retrieve all books.
+
+#### Body:
+
+```json
+{
+  "title": "Book Title",
+  "author": "Author Name",
+  "isbn": "1234567890123",
+  "publish_date": "2024-01-01"
+}
+```
+
+#### Response:
+
+```json
+{
+  "id": 1,
+  "message": "Book created successfully."
+}
+```
+
+---
+
+`DELETE /api/books/<id>`
+Delete a book by ID
+
+#### Response:
+
+```json
+{
+  "id": 1,
+  "message": "Book deleted successfully."
+}
+```
+
+---
+
+`PUT /api/books/<id>`
+Update an existing book by ID
+
+#### Response:
+
+```json
+{
+  "id": 1,
+  "message": "Book updated successfully"
+}
+```
+
+---
+
+## Running Tests
+
+Unit tests are included to validate API functionality. To run the tests, use the following command:
+
+```bash
+python -m unittest discover -v
+```
+
+### Test Coverage
+
+- POST /api/books: Add new books.
+- GET /api/books: Retrieve all books.
+- PUT /api/books/<id>: Update a book.
+- DELETE /api/books/<id>: Delete a book.
+- Edge cases:
+  - Adding a book with invalid data.
+  - Fetching books when the database is empty.
+  - Invalid authentication.
+
+---
+
+## Deployment
+
+The application is designed for deployment in an AWS environment. The following steps will guide you through deploying the API using **Terraform**.
+
+### Prerequisites
+
+Before deploying the API, make sure you have the following:
+
+- An **AWS account**.
+- **Terraform** installed on your local machine.
+- **AWS CLI** configured with appropriate access credentials.
+- A **PostgreSQL database** can be hosted anywhere (api connects using uri).
+- An **AWS Secrets Manager secret** named `io-library-secrets` with the following structure:
+  ```json
+  {
+    "x-api-key": "your_api_key_here",
+    "database-uri": "your_database_uri_here"
+  }
+  ```
+- Example: create secret key using aws CLI:
+  ```
+  aws secretsmanager create-secret \
+      --name io-library-secrets \
+      --description "Secrets for IO Book Library API" \
+      --secret-string '{
+          "x-api-key": "your_api_key_here",
+          "database-uri": "your_database_uri_here"
+      }'
+  ```
+
+### Run Terraform Commands:
+
+After setting up the prerequisites (including the region in variables.tf), you can deploy the API by running the following commands:
+
+```bash
+# Destroy any existing infrastructure
+terraform destroy -auto-approve
+
+# Initialize Terraform
+terraform init
+
+# Validate the configuration files
+terraform validate
+
+# Plan the deployment to see the changes
+terraform plan
+
+# Apply the changes to provision the infrastructure
+terraform apply -auto-approve
+
+```
+
+#### OR: while inside the the `'terraform/'` directory:
+
+```bash
+source ./scripts/terra_run_deploy.sh
+```
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contact
+
+For questions, please contact Monde Phathwa on phathwa@gmail.com
+
+---
+
+### Changes/Additions:
+
+1. **PUT and DELETE Documentation**:
+   Added sections describing `PUT` and `DELETE` endpoints with example request/response data.
+2. **Test Coverage**:
+   Documented the scope of unit tests, including edge cases.
+3. **Deployment**:
+   Highlighted AWS-specific configurations and how they work with the application.
+4. **General Improvements**:
+   Updated the structure to make the file more comprehensive and easier to read.

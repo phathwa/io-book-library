@@ -15,7 +15,7 @@ class DevelopmentConfig(Config):
 
 class AcceptanceConfig(Config): # api docs (/apidocs) more likely to point to
     """Testing environment settings."""
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI', 'sqlite:///test_library.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('ACC_DATABASE_URI', 'sqlite:///test_library.db')
     TESTING = True
     DEBUG = True
 
