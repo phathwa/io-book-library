@@ -20,7 +20,7 @@ This project is an API for managing books using Flask. It allows you to perform 
 
 ### Key Features:
 
-- **Deployed API**: The API is deployed and can be tested using the public IP provided [HERE](http://your-public-ip).
+- **Deployed API**: The API is deployed and can be tested using the public IP provided [HERE](http://16.171.140.205/).
 - **PostgreSQL Database**: A PostgreSQL database is used to store book information. PostgreSQL was chosen because of its robustness, scalability, and support for complex queries. It provides ACID compliance, ensuring data integrity and reliability. Its advanced features such as JSONB support, full-text search, and its ability to handle large datasets make it a suitable choice for this application.
 - **Infrastructure as Code**: Terraform is used to provision AWS resources such as EC2 instances, IAM roles, and the PostgreSQL database.
 - **Testing**: You can interact with the API using **Swagger UI** for an easy testing experience.
