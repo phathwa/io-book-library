@@ -4,11 +4,10 @@ from api import create_app, db
 import os
 
 # Load environment variables from .env file
-load_dotenv()
-config_name = os.getenv("FLASK_ENV", "development")  # Use "development" as fallback
-app = create_app(config_name)
-with app.app_context():
-    print(current_app.config["SQLALCHEMY_DATABASE_URI"])
+# load_dotenv()
+
+# Use "development" as fallback
+app = create_app(os.getenv("FLASK_ENV", "development")) 
 
 # default routes, not related to endpoints (TODO maybe should move to routes.py)
 @app.route('/', methods=['GET'])
