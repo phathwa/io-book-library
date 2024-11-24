@@ -1,6 +1,7 @@
 # Book Library API
 
 A simple REST API for managing a library's book collection, built using Flask and deployed on AWS. This API allows users to manage a collection of books by adding, retrieving, and updating books in the system.
+<br>
 [![alt text](assets/landing.png)](http://16.171.140.205/)
 [![alt text](assets/endpoints.png)](http://16.171.140.205/apidocs)
 
