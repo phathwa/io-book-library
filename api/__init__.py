@@ -13,9 +13,6 @@ db = SQLAlchemy()
 def create_app(config_name=None):
     app = Flask(__name__)
 
-    # QUICK TESTING FIX: Default to DevelopmentConfig if no config_name is provided
-    config_name = config_name or 'development'
-
     if config_name == 'development':
         app.config.from_object(DevelopmentConfig)
     elif config_name == 'acceptance':
