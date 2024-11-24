@@ -8,14 +8,18 @@ A simple REST API for managing a library's book collection, built using Flask an
 ## Table of Contents
 
 - [Overview](#overview)
+- [Key Features](#key-features)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
 - [Deployment](#deployment)
+- [Testing the API using Swagger UI](#testing-the-api-using-swagger-ui)
 - [Infrastructure as Code](#infrastructure-as-code)
+- [Security Considerations](#security-considerations)
 - [Assumptions](#assumptions)
 - [License](#license)
+- [Contact](#contact)
 
 ## Overview
 
@@ -259,6 +263,37 @@ terraform apply -auto-approve
 ```bash
 source ./scripts/terra_run_deploy.sh
 ```
+
+---
+
+## Security Considerations
+
+- ### Secrets Management:
+
+  - API key (x-api-key) and database URI (database-uri) are securely stored in AWS Secrets Manager.
+  - Secrets are not hard-coded in the source code to reduce the risk of exposure.
+  - Environment variables are dynamically set using retrieved secrets.
+
+- ### API Key Authentication:
+
+  - API requires a valid x-api-key for authentication, ensuring only authorized access.
+
+- ### No Secrets in Code:
+
+  - Sensitive information is stored securely via AWS Secrets Manager, not exposed in the source code or version control.
+
+- ### IAM Role for EC2:
+
+  - EC2 instance uses a restricted IAM role to access only necessary resources (e.g., Secrets Manager), ensuring minimized access to unrelated resources.
+
+- ### Secure Database Connection:
+  - Database URI includes secure credentials managed by Secrets Manager.
+  - Network security groups restrict database access to authorized IPs only.
+- ### Logs and Error Handling:
+  - Detailed logs are generated for deployment and application startup.
+  - Errors during initialization stop the application to prevent unstable states.
+
+These measures ensure the project follows security best practices, keeping sensitive information secure and the API reliable in production.
 
 ---
 
