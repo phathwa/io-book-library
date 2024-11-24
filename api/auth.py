@@ -2,7 +2,7 @@ import os
 from flask import request, jsonify
 from functools import wraps
 
-API_KEY = os.getenv("API_KEY", "fake-key")
+API_KEY = os.getenv("API_KEY", "fake-key") # fake-key for debugging purposes
 
 # Decorator to require API key for a route
 def require_api_key(f):
