@@ -8,7 +8,7 @@ import os
 
 # Use "development" as fallback
 app = create_app(os.getenv("FLASK_ENV", "development")) 
-
+print("SQLALCHEMY_DATABASE_URI:", app.config.get("SQLALCHEMY_DATABASE_URI"))
 # default routes, not related to endpoints (TODO maybe should move to routes.py)
 @app.route('/', methods=['GET'])
 def main():
