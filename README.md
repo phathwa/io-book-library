@@ -2,8 +2,8 @@
 
 A simple REST API for managing a library's book collection, built using Flask and deployed on AWS. This API allows users to manage a collection of books by adding, retrieving, and updating books in the system.
 <br>
-[![alt text](assets/landing.png)](http://13.48.177.225/)
-[![alt text](assets/endpoints.png)](http://13.48.177.225//apidocs)
+[![alt text](assets/landing.png)](http://51.20.91.112/)
+[![alt text](assets/endpoints.png)](http://51.20.91.112//apidocs)
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@ This project is an API for managing books using Flask. It allows you to perform 
 
 ### Key Features:
 
-- **Deployed API**: The API is deployed and can be tested, [Click here to test the API](http://13.48.177.225/).
+- **Deployed API**: The API is deployed and can be tested, [Click here to test the API](http://51.20.91.112).
 - **PostgreSQL Database**: A PostgreSQL database is used to store book information. PostgreSQL was chosen because of its robustness, scalability, and support for complex queries. It provides ACID compliance, ensuring data integrity and reliability. Its advanced features such as JSONB support, full-text search, and its ability to handle large datasets make it a suitable choice for this application.
 - **Infrastructure as Code**: Terraform is used to provision AWS resources such as EC2 instances, IAM roles, and the PostgreSQL database.
 - **Testing**: You can interact with the API using **Swagger UI** for an easy testing experience.
