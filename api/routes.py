@@ -108,7 +108,7 @@ def get_book(id):
             error:
               type: string
     """
-    book = Book.query.get(id)
+    book = db.session.get(Book, id)
     if not book:
         return jsonify({"error": "Book not found"}), 404
     return jsonify({
@@ -168,6 +168,14 @@ def add_book():
             error:
               type: string
               example: "Invalid ISBN format. ISBN must be 13 digits."
+      409:
+        description: ISBN already exists
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "ISBN already exists. Please provide a unique ISBN."
     """
     data = request.get_json()
 
@@ -175,6 +183,11 @@ def add_book():
     isbn_error = validate_isbn(data.get('isbn', ''))
     if isbn_error:
         return jsonify({"error": isbn_error}), 400
+
+    # Check if the ISBN already exists in the database
+    existing_book = Book.query.filter_by(isbn=data['isbn']).first()
+    if existing_book:
+        return jsonify({"error": "ISBN already exists. Please provide a unique ISBN."}), 409
 
     # Validate other fields
     error = validate_book_data(data)
@@ -249,7 +262,7 @@ def update_book(id):
               type: string
               example: "Book not found"
     """
-    book = Book.query.get(id)
+    book = db.session.get(Book, id)
     if not book:
         return jsonify({"error": "Book not found"}), 404
 
@@ -308,10 +321,10 @@ def delete_book(id):
               type: string
               example: "Book not found"
     """
-    book = Book.query.get(id)
+    book = db.session.get(Book, id)
     if not book:
         return jsonify({"error": "Book not found"}), 404
 
     db.session.delete(book)
     db.session.commit()
-    return jsonify({"message": "Book deleted successfully"}), 200
+    return jsonify({"message": "Book deleted successfully"}), 204
