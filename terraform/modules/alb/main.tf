@@ -1,6 +1,6 @@
 # ALB
 resource "aws_lb" "alb" {
-  name               = "application-load-balancer"
+  name               = "io-app-load-balancer"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.sg_id]
@@ -35,3 +35,7 @@ resource "aws_lb_target_group_attachment" "tga" {
   port             = 80
 }
 
+output "alb_dns_name" {
+  value       = aws_lb.alb.dns_name
+  description = "The DNS name of the ALB"
+}

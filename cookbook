@@ -9,3 +9,8 @@ sudo cat /var/log/cloud-init-output.log
 
 # Create creation
 aws secretsmanager create-secret --name api-key --secret-string '{"x-api-key":"secretkey"}'
+
+
+# docker
+docker build -t io-library-api:latest . 
+docker run -it -p 80:80 --name books-api io-library-api:latest

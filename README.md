@@ -62,27 +62,29 @@ The project allows seamless deployment, integration, and testing of a book manag
 
 ## Installation
 
-### 1. Clone the repository:
+### Local
+
+#### 1. Clone the repository:
 
 ```bash
 git clone https://github.com/phathwa/io-book-library.git
 cd io-book-library
 ```
 
-### 2. Install Dependencies
+#### 2. Install Dependencies
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Set Up Virtual Environment
+#### 3. Set Up Virtual Environment
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set Environment Variables (Optional)
+#### 4. Set Environment Variables (Optional)
 
 ```bash
 export FLASK_ENV=development
@@ -90,11 +92,28 @@ export API_KEY=your_api_key_here
 export SQLALCHEMY_DATABASE_URI=your_database_uri_here
 ```
 
-### 5. Run the Application
+#### 5. Run the Application
 
 ```bash
 python main.py
 
+```
+
+The application will start on `http://127.0.0.1:80`.
+
+## Docker
+
+#### 1. Clone the repository:
+
+```bash
+git clone https://github.com/phathwa/io-book-library.git
+cd io-book-library
+```
+
+### 2. Build and Run
+
+```bash
+docker-compose up --build
 ```
 
 The application will start on `http://127.0.0.1:80`.

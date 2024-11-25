@@ -21,6 +21,6 @@ class AcceptanceConfig(Config): # api docs (/apidocs) more likely to point to
 
 class ProductionConfig(Config):
     """Production environment settings."""
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{os.environ.get('DATABASE_URI')}"  # treating the EC2 instance as PRD
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')  # treating the EC2 instances as PRD
     DEBUG = False
     TESTING = False

@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  flask_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" # Map host port 8080 to container port 80
+    environment:
+      - FLASK_ENV=development # Set Flask to development mode
+    volumes:
+      - .:/app # Bind mount the current directory to /app in the container
+    restart: always # Ensure the container restarts if it crashes

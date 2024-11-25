@@ -31,10 +31,6 @@ instance/
 # Dependency directories
 node_modules/
 
-# Docker files
-Dockerfile
-docker-compose.yml
-
 # other
 .misc/
 xt-test/

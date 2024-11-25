@@ -11,8 +11,8 @@ echo "************************************************"
 echo "Starting Terraform deployment process..."
 
 # Destroy existing infrastructure (if any)
-echo "Destroying existing infrastructure..."
-terraform destroy -auto-approve || log_error "Failed to destroy existing infrastructure."
+# echo "Destroying existing infrastructure..."
+# terraform destroy -auto-approve || log_error "Failed to destroy existing infrastructure."
 
 # Initialize Terraform
 echo "Initializing Terraform..."
