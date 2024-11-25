@@ -5,9 +5,9 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = [var.sg_id]
   subnets            = var.subnets
-  
+
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 

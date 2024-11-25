@@ -58,7 +58,9 @@ The project allows seamless deployment, integration, and testing of a book manag
 
 - AWS account with access to EC2, Secrets Manager, IAM roles.
 
----
+### API Architecture
+
+## ![Alt text](assets/io-api-arch.jpeg)
 
 ## Installation
 
@@ -242,6 +244,13 @@ Before deploying the API, make sure you have the following:
   {
     "x-api-key": "your_api_key_here",
     "database-uri": "your_database_uri_here"
+  }
+  ```
+  To use defualts (uses sqlite3 database), copy the following:
+  ```json
+  {
+    "x-api-key": "fake-key",
+    "database-uri": "sqlite:///library.db"
   }
   ```
 - Example: create secret key using aws CLI:
