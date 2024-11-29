@@ -36,5 +36,6 @@ node_modules/
 xt-test/
 ./est_sec.py
 
-# secrets
-.env*
+# Ignore environment configuration files
+.env
+.env.*
